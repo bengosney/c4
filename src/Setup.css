@@ -1,0 +1,15 @@
+label {
+    font-size: 15px;
+}
+
+button {
+    background: none;
+    color: #fff;
+    border: 1px solid #fff;
+    margin: 0 1em;
+}
+
+button:disabled {
+    color: #666;
+    border-color: #666;
+}

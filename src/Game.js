@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import './Game.css';
 
@@ -129,10 +130,24 @@ class Game extends Component {
 	return (
 	    <div>
 	      <div>Game - { title }</div>
-	      <div className={ "game" }>{ this.state.board.map((col, col_index) => getCol(col, col_index)) }</div>
-				     </div>
+	      <div>
+		<button onClick={ () => this.props.restart() }>Reset</button>
+	      </div>
+	      <div className={ "game" }>
+		{ this.state.board.map((col, col_index) => getCol(col, col_index)) }
+	      </div>
+            </div>
 	);
     }
 }
+
+Game.propTypes = {
+    restart: PropTypes.func.isRequired
+};
+
+Game.defaultProps = {
+    restart: () => console.log('Reset')
+};
+
 
 export default Game;

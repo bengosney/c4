@@ -30,7 +30,13 @@ class App extends Component {
 	if (this.state.state === STATE_SETUP) {
 	    return <Setup play={ (p1, p2) => this.setGame(p1, p2) } />;
 	} else {
-	    return <Game restart={ () => this.setState({player1: '', player2: '', state: STATE_SETUP}) }/>;
+	    const { player1, player2 } = this.state;
+	    const resetState = {
+		player1: '',
+		player2: '',
+		state: STATE_SETUP
+	    };
+	    return <Game restart={ () => this.setState(resetState) } player1={ player1 } player2={ player2 } />;
 	}
     }
     

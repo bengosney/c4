@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import './Game.css';
 
+import { HUMAN } from './Setup';
+
 const emptyBoard = (x, y) => {
     let b = new Array(x);
     for (let i = 0; i < b.length; i++) {
@@ -27,7 +29,19 @@ class Game extends Component {
 	};
     }
 
+    humanTurn() {
+	return this.props[`player${this.state.turn}`] === HUMAN;	    
+    }
+
     col_click(e, col) {
+	if (!this.humanTurn()) {
+	    return;
+	}
+
+	this.doTurn(col);
+    }
+
+    doTurn(col) {
 	const {board, turn} = this.state;
 	const row = board[col];
 	let winner = 0;
@@ -123,13 +137,14 @@ class Game extends Component {
     
     render() {
 	const title = this.state.winner === 0 ? `Player ${this.state.turn}` : `Winner ${this.state.winner}`;
+	const waiting = this.humanTurn() ? '' : ' - waiting on AI';
 	const getClass = val => (val === 1) ? 'red' : (val === 2) ? 'yellow' : '';
 	const getElement = (e, index) => <div key={index} className={ getClass(e) + " item"}>{ e }</div>;
 	const getCol = (col, col_index) => <div key={col_index} className="col" onClick={ (e, i) => this.col_click(e, col_index) }>{ col.map((e, row_index) => getElement(e, row_index)) }</div>;
 	
 	return (
 	    <div>
-	      <div>Game - { title }</div>
+	      <div>Game - { title }{ waiting }</div>
 	      <div>
 		<button onClick={ () => this.props.restart() }>Reset</button>
 	      </div>
@@ -142,7 +157,9 @@ class Game extends Component {
 }
 
 Game.propTypes = {
-    restart: PropTypes.func.isRequired
+    restart: PropTypes.func.isRequired,
+    player1: PropTypes.string.isRequired,
+    player2: PropTypes.string.isRequired
 };
 
 Game.defaultProps = {

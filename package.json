@@ -2,7 +2,7 @@
   "name": "c4",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://bengosney.github.io/c4",
+  "homepage": "https://bengosney.github.io/c4/",
   "dependencies": {
     "node-sass": "^4.11.0",
     "pouchdb": "^7.0.0",

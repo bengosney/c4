@@ -16,7 +16,7 @@ class App extends Component {
 
 	this.state = {
 	    state: STATE_SETUP,
-	    player1: 'http://chris.evo.site/c4/c4.php', //HUMAN,
+	    player1: 'Human',
 	    player2: 'Human'
 	};
     }

@@ -10,8 +10,8 @@ class Setup extends Component {
 	super(props);
 
 	this.state = {
-	    player1: HUMAN,
-	    player2: HUMAN
+	    player1: props.player1,
+	    player2: props.player2
 	};
     }
 
@@ -32,12 +32,10 @@ class Setup extends Component {
 	      <div>
 		<p>
 		  <label htmlFor="player_1">Player 1</label>
-		  <button onClick={ e => this.setState({player1: HUMAN }) } disabled={ this.state.player1 === HUMAN }>Human</button>
 		  <input id="player_1" type="text" value={ this.state.player1 } onChange={ e => this.handleChange('player1', e) } />
 		</p>
 		<p>
 		  <label htmlFor="player_2">Player 2</label>
-		  <button onClick={ e => this.setState({player2: HUMAN }) } disabled={ this.state.player2 === HUMAN }>Human</button>
 		  <input id="player_2" type="text" value={ this.state.player2 } onChange={ e => this.handleChange('player2', e) } />
 		</p>
 		<p>
@@ -50,11 +48,15 @@ class Setup extends Component {
 }
 
 Setup.propTypes = {
-    play: PropTypes.func.isRequired
+    play: PropTypes.func.isRequired,
+    player1: PropTypes.string,
+    player2: PropTypes.string
 };
 
 Setup.defaultProps = {
-    play: (player1, player2) => console.log(player1, 'vs', player2)
+    play: (player1, player2) => console.log(player1, 'vs', player2),
+    player1: '',
+    player2: ''
 };
 
 export default Setup;

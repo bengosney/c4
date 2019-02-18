@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
 
+import { db, localDB } from './Store';
+
 import Game from './Game';
 import Setup from './Setup';
+
 
 const STATE_SETUP = 'setup';
 const STATE_PLAYING = 'playing';
@@ -13,12 +16,12 @@ class App extends Component {
 
 	this.state = {
 	    state: STATE_SETUP,
-	    player1: '',
-	    player2: ''
+	    player1: 'http://chris.evo.site/c4/c4.php', //HUMAN,
+	    player2: 'Human'
 	};
     }
 
-    setGame(player1, player2) {
+    startGame(player1, player2) {
 	this.setState({
 	    player1: player1,
 	    player2: player2,
@@ -28,12 +31,10 @@ class App extends Component {
 
     getMain() {
 	if (this.state.state === STATE_SETUP) {
-	    return <Setup play={ (p1, p2) => this.setGame(p1, p2) } />;
+	    return <Setup play={ (p1, p2) => this.startGame(p1, p2) } player1={ this.state.player1 } player2={ this.state.player2 } />;
 	} else {
 	    const { player1, player2 } = this.state;
 	    const resetState = {
-		player1: '',
-		player2: '',
 		state: STATE_SETUP
 	    };
 	    return <Game restart={ () => this.setState(resetState) } player1={ player1 } player2={ player2 } />;

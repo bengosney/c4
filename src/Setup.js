@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { db, localDB } from './Store';
+
 import './Setup.css';
 
 export const HUMAN = 'Human';
@@ -11,9 +13,37 @@ class Setup extends Component {
 
 	this.state = {
 	    player1: props.player1,
-	    player2: props.player2
+	    player2: props.player2,
+	    playerList: []
 	};
+
+	this.getPlayers();
     }
+
+    getPlayers() {
+	db.query({
+	    map: function(doc, emit) {
+		if (doc.type == 'player') {
+		    emit(doc.name);
+		}
+	    },
+	    reduce: function(keys, values, rereduce) {
+		console.log(keys, values, rereduce);
+		const unique_labels = {};
+		values.forEach((label) => {
+		    if(!unique_labels[label]) {
+			unique_labels[label] = true;
+		    }
+		});
+		
+		return unique_labels;
+	    }
+	}).then(results => {
+	    console.log(results);
+	    this.setState({playerList: results.rows});
+	});
+    }
+
 
     handleChange(key, event) {
 	const state = [];
@@ -25,6 +55,11 @@ class Setup extends Component {
     
     render() {
 	const { player1, player2 } = this.state;
+
+	const playerList = this.state.playerList.map(e => {
+	    return (<div key={ e.id }>{ e.key }</div>);
+	});
+
 	
 	return (
 	    <div className="Setup">

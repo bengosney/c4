@@ -17,11 +17,28 @@ class App extends Component {
 	this.state = {
 	    state: STATE_SETUP,
 	    player1: 'Human',
-	    player2: 'Human'
+	    player2: 'Human',
+	    players: []
 	};
     }
 
+    savePlayer(player) {
+	const currentDate = new Date();
+	const newPlayer = {
+	    type: 'player',
+	    name: player,
+	    ts: currentDate.getTime()
+	};
+
+	newPlayer._id = `${newPlayer.name}:${newPlayer.ts}`;
+
+	db.put(newPlayer);
+    }
+		
     startGame(player1, player2) {
+	this.savePlayer(player1);
+	this.savePlayer(player2);
+	
 	this.setState({
 	    player1: player1,
 	    player2: player2,

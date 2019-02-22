@@ -70,7 +70,7 @@ class Game extends Component {
 	let winner = 0;
 	let pos = -1;
 	
-	for (let i = 0 ; i < row.length ; i++) {
+	for (let i = row.length - 1; i >= 0 ; i--) {
 	    if (row[i] === 0) {
 		pos = i;
 	    }
@@ -134,6 +134,7 @@ class Game extends Component {
 		}
 		if (count === winCount) {
 		    this.setState({winningPositions: winningPositions});
+		    console.log(board);
 		    return true;
 		}           
 	    }
@@ -180,17 +181,20 @@ class Game extends Component {
     render() {
 	const title = this.state.winner === 0 ? `Player ${this.state.turn}` : `Winner ${this.state.winner}`;
 	const waiting = this.humanTurn() || this.state.winner > 0 ? '' : ' - waiting on AI';
-	const getClass = (val, row, col) => {
+	const getClass = (val, row_in, col) => {
+	    const row = (this.state.board[0].length - row_in) - 1;
 	    let className = (val === 1) ? 'red' : (val === 2) ? 'yellow' : '';
 
+	    console.log(`${col}:${row}`);
 	    if (this.state.winningPositions.indexOf(`${col}:${row}`) > -1) {
+		console.log('winner');
 		className = `${className} winner`;
 	    }
 
 	    return className;
 	};
 	const getElement = (e, index, col) => <div key={index} className={ getClass(e, index, col) + " item"}>{ e }</div>;
-	const getCol = (col, col_index) => <div key={col_index} className="col" onClick={ (e, i) => this.col_click(e, col_index) }>{ col.map((e, row_index) => getElement(e, row_index, col_index)) }</div>;
+	const getCol = (col, col_index) => <div key={col_index} className="col" onClick={ (e, i) => this.col_click(e, col_index) }>{ col.slice(0).reverse().map((e, row_index) => getElement(e, row_index, col_index)) }</div>;
 	
 	return (
 	    <div>
